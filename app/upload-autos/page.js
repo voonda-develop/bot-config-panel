@@ -25,16 +25,27 @@ export default function StockUploadPage() {
         const fileName = `stock_actual.${fileExt}`
         const filePath = `importaciones/${fileName}`
 
-        const { error } = await supabase.storage.from("importaciones").upload(filePath, file, {
-            upsert: true,
-            contentType: file.type
-        })
+        let { error } = await supabase.storage.from("importaciones").update(filePath, file, { contentType: file.type })
+
+        if (error && /Not Found/i.test(error.message)) {
+            // Si no existe, lo creamos
+            ;({ error } = await supabase.storage.from("importaciones").upload(filePath, file, { contentType: file.type }))
+        }
 
         if (error) {
-            console.error(error)
-            setMessage("Error al subir el archivo.")
+            setMessage(`Error al subir: ${error.message}`)
         } else {
-            setMessage("Archivo subido correctamente.")
+            let message = ""
+            message = "Archivo subido correctamente."
+            try {
+                await fetch("https://voonda.app.n8n.cloud/webhook-test/890afa62-36b0-4eb6-a4d8-ea0c705b72bc", {
+                method: "GET"
+                })
+                message = "Archivo subido y workflow disparado.";
+                setMessage(message);
+            } catch (e) {
+                setMessage(`Archivo subido, pero falló el webhook: ${e.message}`);
+            }
         }
 
         setUploading(false)
