@@ -38,7 +38,7 @@ export default function StockUploadPage() {
             let message = ""
             message = "Archivo subido correctamente."
             try {
-                await fetch("https://voonda.app.n8n.cloud/webhook-test/890afa62-36b0-4eb6-a4d8-ea0c705b72bc", {
+                await fetch("https://voonda.app.n8n.cloud/webhook/890afa62-36b0-4eb6-a4d8-ea0c705b72bc", {
                 method: "GET"
                 })
                 message = "Archivo subido y workflow disparado.";
