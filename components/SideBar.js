@@ -17,7 +17,8 @@ export default function Sidebar() {
 
     const links = [
         { href: "/admin-bot", label: "Administrar Bot" },
-        { href: "/upload-autos", label: "Subir Archivo de Automóviles" }
+        { href: "/upload-autos", label: "Subir Archivo de Automóviles" },
+        { href: "/vehiculos", label: "Gestión de Vehículos" }
     ]
 
     return (
